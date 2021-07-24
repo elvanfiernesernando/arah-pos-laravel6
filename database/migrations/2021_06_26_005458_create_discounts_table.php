@@ -46,10 +46,10 @@ class CreateDiscountsTable extends Migration
             $table->boolean('is_fixed')->default(true);
 
             // When the voucher begins
-            $table->timestamp('starts_at');
+            $table->dateTime('starts_at');
 
             // When the voucher ends
-            $table->timestamp('expires_at');
+            $table->dateTime('expires_at');
 
             // You know what this is...
             $table->timestamps();
