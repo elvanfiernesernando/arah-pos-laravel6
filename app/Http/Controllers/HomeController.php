@@ -24,12 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $is_profile_completed = auth()->user()->is_profile_completed;
-
-        if ($is_profile_completed == 1) {
-            return view('home');
-        } else {
-            return view('auth.registerwizard');
-        }
+        return view('home');
     }
 }

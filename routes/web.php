@@ -23,7 +23,8 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::post('/registration-wizard', 'UserController@registrationWizard')->name('registration.wizard');
+    Route::get('/registration/wizard', 'WizardController@index')->name('wizard.index');
+    Route::POST('/registration/wizard/store', 'WizardController@store')->name('wizard.store');
 
     //home / Dashboard kita taruh diluar group karena semua jenis user yg login bisa mengaksesnya
     Route::get('/home', 'HomeController@index')->name('home');

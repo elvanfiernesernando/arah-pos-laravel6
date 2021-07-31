@@ -7,6 +7,8 @@ use App\User;
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 
+use App\Product;
+
 class ApiController extends Controller
 {
     public $successStatus = 200;
@@ -17,48 +19,31 @@ class ApiController extends Controller
      * @return \Illuminate\Http\Response 
      */ 
     public function login(){ 
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
+        if(Auth::attempt([
+            'email' => request('email'),
+            'password' => request('password'),
+            'status' => 1,
+        ])){ 
             $user = Auth::user(); 
-            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+            $success['token'] =  $user->createToken('ArahPOS')-> accessToken; 
             return response()->json(['success' => $success], $this-> successStatus); 
         } 
         else{ 
-            return response()->json(['error'=>'Unauthorised'], 401); 
+            return response()->json(['error'=>'Password Invalid / Inactive Users'], 401); 
         } 
     }
-    
-    /** 
-     * Register api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
-    public function register(Request $request) 
-    { 
-        $validator = Validator::make($request->all(), [ 
-            'name' => 'required', 
-            'email' => 'required|email', 
-            'password' => 'required', 
-            'c_password' => 'required|same:password', 
-        ]);
-        if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 401);            
-        }
-        $input = $request->all(); 
-        $input['password'] = bcrypt($input['password']); 
-        $user = User::create($input); 
-        $success['token'] =  $user->createToken('MyApp')-> accessToken; 
-        $success['name'] =  $user->name;
-        return response()->json(['success'=>$success], $this-> successStatus); 
+
+    public function getProducts()
+    {
+        $user_business_unit_id = userBusinessUnitId();
+        $products = Product::inBusinessUnit($user_business_unit_id)->orderBy('created_at', 'DESC')->get();
+
+        return response()->json([
+            'products' => $products
+        ], 200);
     }
 
-    /** 
-     * details api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
-    public function details() 
-    { 
-        $user = Auth::user(); 
-        return response()->json(['success' => $user], $this-> successStatus); 
-    } 
+    
+
+
 }

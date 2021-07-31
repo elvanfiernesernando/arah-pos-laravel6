@@ -1,6 +1,7 @@
 <!-- SIDEBAR START -->
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
+        @if(auth()->user()->is_profile_completed == 1)
         <li class="nav-item">
             <a class="nav-link" href="{{ route('home') }}">
                 <i class="icon-grid menu-icon"></i>
@@ -67,6 +68,15 @@
             </div>
         </li>
         @endif
+        @endif
+        @if (auth()->user()->is_profile_completed == 0)
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('wizard.index') }}">
+                <i class="icon-command menu-icon"></i>
+                <span class="menu-title">Registration Wizard</span>
+            </a>
+        </li>
+        @endif
         <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#discount" aria-expanded="false" aria-controls="ui-basic">
                 <i class="icon-marquee-minus menu-icon"></i>
@@ -81,12 +91,12 @@
                 </ul>
             </div>
         </li> -->
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('transaction.index') }}">
                 <i class="icon-bag menu-icon"></i>
                 <span class="menu-title">Transaction</span>
             </a>
-        </li>
+        </li> --}}
         <!-- <li class="nav-item">
             <a class="nav-link" href="">
                 <i class="icon-bar-graph menu-icon"></i>

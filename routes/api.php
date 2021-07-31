@@ -17,9 +17,19 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::post('login', 'ApiController@login');
-Route::post('register', 'ApiController@register');
+// Route::post('login', 'ApiController@login');
+// Route::post('register', 'ApiController@register');
+
+// Route::group(['middleware' => 'auth:api'], function(){
+//     Route::post('details', 'ApiController@details');
+//     Route::get('products', 'ApiController@getProducts');
+// });
+
+Route::post('login', 'API\UserController@login');
+Route::post('register', 'API\UserController@register');
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::post('details', 'ApiController@details');
-});
+    Route::get('user/detail', 'Api\UserController@details');
+    Route::post('logout', 'Api\UserController@logout');
+    Route::get('products', 'Api\UserController@getProducts');
+}); 

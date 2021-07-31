@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -49,12 +49,20 @@ class LoginController extends Controller
         if (auth()->attempt([
             'email' => $request->email,
             'password' => $request->password,
-            'status' => 1,
         ])) {
+            if (auth()->user()->status == 1) {
 
-            return redirect()->intended('home');
+                if (auth()->user()->is_profile_completed == 1) {
+
+                    return redirect()->intended('home');
+                }
+
+                return redirect()->intended('registration/wizard');
+            }
+
+            return redirect()->back()->with(['error' => 'Your account is inactive!']);
         }
 
-        return redirect()->back()->with(['error' => 'Password Invalid / Inactive Users']);
+        return redirect()->back()->with(['error' => 'Email or password incorrect!']);
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-<title>ARAH POS - Register</title>
+<title>ARAH POS - Wizard</title>
 @endsection
 
 @section('content')
@@ -33,38 +33,41 @@
                         @endalert
                         @endif
 
-                        <h4 class="card-title">Registration Wizard</h4>
-                        <p class="mb-3">Complete your profile and enjoy our product</p>
-                        <form id="vertical-registration-wizard" method="POST" action="{{ route('registration.wizard') }}">
+                        <h4 class="card-title">Hello, {{ auth()->user()->name}}</h4>
+                        <p class="mb-3">Let's finish setting up your account</p>
+                        <form id="vertical-registration-wizard" method="POST" action="{{ route('wizard.store') }}">
                             @csrf
                             <div>
                                 <h3>Company</h3>
                                 <section>
                                     <h3 class="mb-3 mt-1">Company Information</h3>
-                                    <div class="form-group">
-                                        <label for="company_name">Company Name</label>
-                                        <input id="company_name" name="company_name" type="text" class=" form-control">
+                                    <div class="form-group mb-2">
+                                        <label for="company_name" class="required">Name</label>
+                                        <input id="company_name" name="company_name" type="text" class="form-control" placeholder="ex: KopiKu Rayu / PT. Arah Melangkah">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="company_email">Company Email</label>
-                                        <input id="company_email" name="company_email" type="email" class=" form-control">
+                                    <div class="form-group mb-0">
+                                        <label for="company_email" class="required">Email</label>
+                                        <input id="company_email" name="company_email" type="email" class="form-control" placeholder="ex: example@mail.com">
                                     </div>
-                                    <div class="form-check form-check-primary">
-                                    </div>
+                                    <label class="form-check-label text-muted ml-4 mt-2">
+                                        <input id="cb_company_email" type="checkbox" class="form-check-input">
+                                        Use current email
+                                        <i class="input-helper"></i>
+                                    </label>
                                     <div class="form-group">
-                                        <label for="company_address">Address</label>
-                                        <input id="company_address" name="company_address" type="text" class=" form-control">
+                                        <label for="company_address" class="required">Address</label>
+                                        <textarea id="company_address" name="company_address" type="text" class="form-control" rows="4"  placeholder="ex: Jl. Palmerah Barat 21 Gelora, Tanah Abang, Jakarta"></textarea>
                                     </div>
                                 </section>
                                 <h3>Business Unit</h3>
                                 <section>
                                     <h3 class="mb-3 mt-1">Business Unit</h3>
                                     <div class="form-group">
-                                        <label for="business_unit_name">Business Unit Name</label>
-                                        <input id="business_unit_name" name="business_unit_name" type="text" class=" form-control">
+                                        <label for="business_unit_name" class="required">Business Unit Name</label>
+                                        <input id="business_unit_name" name="business_unit_name" type="text" class=" form-control" placeholder="ex: KopiKu Rayu">
                                     </div>
                                     <div class="form-group">
-                                        <label for="business_type">Business Type</label>
+                                        <label for="business_type" class="required">Business Type</label>
                                         <select name="business_type" id="business_type" class=" form-control">
                                             <option value="">Choose</option>
                                             <!-- Tambah Jenis Bisnis Disini -->
@@ -79,17 +82,22 @@
                                 <section>
                                     <h3 class="mb-3 mt-1">Outlet</h3>
                                     <div class="form-group">
-                                        <label for="branch_name">Outlet Name</label>
-                                        <input id="branch_name" name="branch_name" type="text" class=" form-control">
+                                        <label for="branch_name" class="required">Outlet Name</label>
+                                        <input id="branch_name" name="branch_name" type="text" class=" form-control" placeholder="ex: Cabang Jakarta">
                                     </div>
                                     <div class="form-group">
-                                        <label for="branch_address">Address</label>
-                                        <input id="branch_address" name="branch_address" type="text" class=" form-control">
+                                        <label for="branch_address" class="required">Address</label>
+                                        <textarea id="branch_address" name="branch_address" type="text" class=" form-control" rows="4" placeholder="ex: Jl. Palmerah Barat 21 Gelora, Tanah Abang, Jakarta"></textarea>
                                     </div>
                                 </section>
                                 <h3>Finish</h3>
                                 <section>
                                     <h3 class="mb-3 mt-1">Finish</h3>
+                                    <label class="form-check-label text-muted ml-4 mt-2">
+                                        <input id="cb_agreement" name="cb_agreement" type="checkbox" class="form-check-input">
+                                        I hereby agree and confirm that all of my personal information and data filled in this form are accurate
+                                        <i class="input-helper"></i>
+                                    </label>
                                 </section>
                             </div>
                         </form>
@@ -104,11 +112,7 @@
 
 @section('js')
 <script>
-    (function($) {
-
-        $('#cb-company-email').change(function() {
-            alert($(this).prop('checked'))
-        })
+    $(document).ready(function($) {
 
         'use strict';
 
@@ -142,30 +146,39 @@
                 branch_address: {
                     required: true,
                     minlength: 10
+                },
+                cb_agreement: {
+                    required: true
                 }
             },
             messages: {
                 company_name: {
-                    required: "Please enter your company name",
+                    required: "This field is required",
                     minlength: "Your company name must consist of at least 5 characters"
                 },
+                company_email: {
+                    required: "This field is required",
+                },
                 company_address: {
-                    required: "Please enter your company address",
+                    required: "This field is required",
                     minlength: "Your company address must consist of at least 10 characters"
                 },
                 business_unit_name: {
-                    required: "Please enter your business unit name",
+                    required: "This field is required",
                 },
-                business_unit_address: {
-                    required: "Please select your business unit type",
+                business_type: {
+                    required: "This field is required",
                 },
                 branch_name: {
-                    required: "Please enter your branch name",
+                    required: "This field is required",
                     minlength: "Your branch name must consist of at least 5 characters"
                 },
                 branch_address: {
-                    required: "Please enter your branch address",
+                    required: "This field is required",
                     minlength: "Your branch address must consist of at least 10 characters"
+                },
+                cb_agreement: {
+                    required: "&#10003"
                 }
             },
             errorPlacement: function(label, element) {
@@ -205,8 +218,14 @@
             }
         });
 
+        $('#cb_company_email').change(function() {
+            if(this.checked) {
+                $('#company_email').val("{{ auth()->user()->email }}")
+            } else{
+                $('#company_email').val("")
+            }
+        })
 
-
-    })(jQuery);
+    });
 </script>
 @endsection
