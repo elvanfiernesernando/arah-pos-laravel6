@@ -64,8 +64,9 @@ class WizardController extends Controller
             ]);
 
             // Ambil data user yang sedang login
-            $user = User::find(auth()->user()->id);
+            $user = User::findOrFail(auth()->user()->id);
 
+            // Ambil data role master
             $master = Role::where('name', 'Master')->get();
 
             if ($master->isEmpty()) {
@@ -77,7 +78,7 @@ class WizardController extends Controller
                 $user->first()->assignRole($master_role);
             } else {
                 // Assign Role master ke User
-                $user->first()->assignRole('Master');
+                $user->assignRole($master);
             }
 
             // Find Cashier Role
