@@ -63,3 +63,9 @@ function userIsProfileCompleted()
     $user_is_profile_completed = User::where('id', auth()->user()->id)->pluck('is_profile_completed')->first();
     return $user_is_profile_completed;
 }
+
+function getUserRole()
+{
+    $role_scope = auth()->user()->roles->first()->scope;
+    return $role_scope;
+}
