@@ -47,6 +47,7 @@
         <div class="row">
 
             <!-- Create New Role START -->
+            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Role'))
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -61,18 +62,30 @@
                                 <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}" id="name" placeholder="Cashier or Manager">
                                 <p class="text-danger">{{ $errors->first('name') }}</p>
                             </div>
+                            <div class="form-group">
+                                <label for="scope">Scope</label>
+                                <select name="scope" id="scope" class=" form-control">
+                                    <option value="">Choose</option>
+                                    <!-- Tambah Jenis Bisnis Disini -->
+                                    <option value="Company">Company</option>
+                                    <option value="Business Unit">Business Unit</option>
+                                    <option value="Branch">Outlet</option>
+                                    <!-- Tambah Jenis Bisnis Disini END-->
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary mr-2">Create</button>
                         </form>
                     </div>
                 </div>
             </div>
+            @endif
             <!-- New Role END -->
 
-            <div class="col-md-8 grid-margin stretch-card">
+            <div class="{{ auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Role') ? 'col-md-8' : 'col-md-12'}} grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">All Role</h4>
-                        <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        <p class="card-description">To change or add permission or scope, go to permission page.</p>
 
                         <div class="table-responsive">
                             <table id="indexRoleTable" class="display expandable-table table-hover table-striped" width="100%"">
@@ -80,8 +93,11 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Role</th>
+                                        <th>Scope</th>
                                         <th>Created At</th>
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Role'))
                                         <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,20 +105,23 @@
                                     <tr>
                                         <td>{{ $index + $roles->firstItem() }}</td>
                                         <td>{{ $row->name }}</td>
+                                        <td>{{ $row->scope }}</td>
                                         <td>{{ $row->created_at }}</td>
                                         <td>
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Role'))
                                             @if ($row->name != 'Cashier')
                                             <button class=" btn btn-light" data-toggle="modal" data-target="#deleteRoleModal" data-id="{{ $row->id }}">
-                                <i class="ti-close text-danger"></i>Remove
-                                </button>
-                                @endif
-                                </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan=" 4" class="text-center">No data</td>
-                                </tr>
-                                @endforelse
+                                            <i class="ti-close text-danger"></i>Remove
+                                            </button>
+                                            @endif
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan=" 4" class="text-center">No data</td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             {{ $roles->links() }}
@@ -116,7 +135,9 @@
 
         <!-- -------------------------------------------------------------------------------------------------------------------------- -->
 
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Role'))
         @include('roles.modal.delete')
+        @endif
 
     </div>
     <!-- content-header END -->

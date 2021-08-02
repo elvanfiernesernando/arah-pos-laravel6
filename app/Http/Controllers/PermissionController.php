@@ -16,9 +16,10 @@ class PermissionController extends Controller
         //Default, set dua buah variable dengan nilai null
         $permissions = null;
         $hasPermission = null;
+        $getRole = null;
 
         //Mengambil data role
-        $roles = Role::where('company_id', userCompanyId())->where('name', '!=', 'Cashier')->pluck('name');
+        $roles = Role::where('company_id', userCompanyId())->get();
 
         //apabila parameter role terpenuhi
         if (!empty($role)) {
@@ -35,18 +36,19 @@ class PermissionController extends Controller
             $permissions = Permission::all()->pluck('name');
         }
         return view('permissions.index
-        ', compact('roles', 'permissions', 'hasPermission'));
+        ', compact('roles', 'permissions', 'hasPermission', 'getRole'));
     }
 
     public function addPermission(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|unique:permissions'
+            'name' => 'required|string|unique:permissions',
         ]);
 
         $permission = Permission::firstOrCreate([
             'name' => $request->name
         ]);
+
         return redirect()->back();
     }
 
@@ -58,6 +60,10 @@ class PermissionController extends Controller
         //fungsi syncPermission akan menghapus semua permissio yg dimiliki role tersebut
         //kemudian di-assign kembali sehingga tidak terjadi duplicate data
         $role->syncPermissions($request->permission);
+
+        $role->update([
+            'scope' => $request->scope,
+        ]);
         return redirect()->back()->with(['success' => 'Permission to Role Saved!']);
     }
 }

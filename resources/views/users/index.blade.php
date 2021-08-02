@@ -57,6 +57,7 @@
                                 <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                             </div>
 
+                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Employee'))
                             <div class="col-md-4">
                                 <div class="grid-margin float-lg-right mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-icon-text" data-toggle="modal" data-target="#addEmployeeModal">
@@ -65,6 +66,7 @@
                                     </button>
                                 </div>
                             </div>
+                            @endif
                         </div>
 
                         <div class="table-responsive">
@@ -76,7 +78,9 @@
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>Status</th>
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Employee') || auth()->user()->hasPermissionTo('Delete Employee'))
                                         <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,29 +93,35 @@
                                         <td>
                                             @foreach ($row->getRoleNames() as $role)
                                             <label for="" class=" badge badge-info">{{ $role }}</label>
-                                @endforeach
-                                </td>
-                                <td>
-                                    @if ($row->status)
-                                    <label class="badge badge-success">Active</label>
-                                    @else
-                                    <label for="" class="badge badge-danger">Suspend</label>
-                                    @endif
-                                </td>
-                                <td class="text-right">
-                                    <button class="btn btn-light mb-2" data-toggle="modal" data-target="#editEmployeeModal" data-id="{{ $row->id }}">
-                                        <i class="ti-pencil-alt text-primary"></i>Edit
-                                    </button>
-                                    <button class="btn btn-light" data-toggle="modal" data-target="#deleteEmployeeModal" data-id="{{ $row->id }}">
-                                        <i class="ti-close text-danger"></i>Remove
-                                    </button>
-                                </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="12" class="text-center">No data</td>
-                                </tr>
-                                @endforelse
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @if ($row->status)
+                                            <label class="badge badge-success">Active</label>
+                                            @else
+                                            <label for="" class="badge badge-danger">Suspend</label>
+                                            @endif
+                                        </td>
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Employee') || auth()->user()->hasPermissionTo('Delete Employee'))
+                                        <td class="text-right">
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Employee'))
+                                            <button class="btn btn-light mb-2" data-toggle="modal" data-target="#editEmployeeModal" data-id="{{ $row->id }}">
+                                                <i class="ti-pencil-alt text-primary"></i>Edit
+                                            </button>
+                                            @endif
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Employee'))
+                                            <button class="btn btn-light" data-toggle="modal" data-target="#deleteEmployeeModal" data-id="{{ $row->id }}">
+                                                <i class="ti-close text-danger"></i>Remove
+                                            </button>
+                                            @endif
+                                        </td>
+                                        @endif
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="12" class="text-center">No data</td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -124,9 +134,15 @@
 
         <!-- -------------------------------------------------------------------------------------------------------------------------- -->
 
-        @include('users.modal.add');
-        @include('users.modal.edit');
-        @include('users.modal.delete');
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Employee'))
+        @include('users.modal.add')
+        @endif
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Employee'))
+        @include('users.modal.edit')
+        @endif
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Employee'))
+        @include('users.modal.delete')
+        @endif
 
 
     </div>

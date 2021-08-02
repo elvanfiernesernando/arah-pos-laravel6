@@ -58,7 +58,7 @@
                                 <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                             </div>
 
-                            @if (auth()->user()->roles('Master') || auth()->user()->can('Create Business Unit'))
+                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Business Unit'))
                             <div class="col-md-4">
                                 <div class="grid-margin float-lg-right mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-icon-text" data-toggle="modal" data-target="#addBusinessUnitModal">
@@ -77,7 +77,7 @@
                                         <th>No.</th>
                                         <th>Business Unit Name</th>
                                         <th>Business Type</th>
-                                        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Business Unit') || auth()->user()->can('Delete Business Unit'))
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Business Unit') || auth()->user()->hasPermissionTo('Delete Business Unit'))
                                         <th>Action</th>
                                         @endif
                                     </tr>
@@ -89,14 +89,14 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->business_unit_name }}</td>
                                         <td>{{ $row->business_type }}</td>
-                                        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Business Unit') || auth()->user()->can('Delete Business Unit'))
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Business Unit') || auth()->user()->hasPermissionTo('Delete Business Unit'))
                                         <td class="text-right">
-                                            @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Business Unit'))
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Business Unit'))
                                             <button class="btn btn-light mb-2" data-toggle="modal" data-target="#editBusinessUnitModal" data-id="{{ $row->id }}">
                                                 <i class="ti-pencil-alt text-primary"></i>Edit
                                             </button>
                                             @endif
-                                            @if (auth()->user()->roles('Master') || auth()->user()->can('Delete Business Unit'))
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Business Unit'))
                                             <button class="btn btn-light" data-toggle="modal" data-target="#deleteBusinessUnitModal" data-id="{{ $row->id }}">
                                                 <i class="ti-close text-danger"></i>Remove
                                             </button>
@@ -121,13 +121,13 @@
 
         <!-- -------------------------------------------------------------------------------------------------------------------------- -->
 
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Create Business Unit'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Business Unit'))
         @include('business_units.modal.add')
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Business Unit'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Business Unit'))
         @include('business_units.modal.edit')
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Delete Business Unit'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Business Unit'))
         @include('business_units.modal.delete')
         @endif
 

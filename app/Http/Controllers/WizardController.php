@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use Spatie\Permission\Models\Permission;
 use App\User;
 use App\Branch;
 use App\Business_unit;
@@ -72,7 +73,8 @@ class WizardController extends Controller
             if ($master->isEmpty()) {
                 $master_role = Role::create([
                     'name' => 'Master',
-                    'company_id' => null
+                    'company_id' => null,
+                    'scope' => 'Company',
                 ]);
                 // Assign Role master ke User
                 $user->first()->assignRole($master_role);
@@ -87,8 +89,11 @@ class WizardController extends Controller
             if ($cashier->isEmpty()) {
                 $cashier_role = Role::create([
                     'name' => 'Cashier',
-                    'company_id' => $company->id
+                    'company_id' => $company->id,
+                    'scope' => 'Branch'
                 ]);
+
+                $cashier_role->givePermissionTo('Access Mobile Apps');
             }
 
             // Kemudian Attach User ke Branch

@@ -58,7 +58,7 @@
                                 <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                             </div>
 
-                            @if (auth()->user()->roles('Master') || auth()->user()->can('Create Category'))
+                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Category'))
                             <div class="col-md-4">
                                 <div class="grid-margin float-lg-right mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-icon-text" data-toggle="modal" data-target="#addCategoryModal">
@@ -78,7 +78,7 @@
                                         <th>Category</th>
                                         <th>Business Unit</th>
                                         <th>Description</th>
-                                        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Category') || auth()->user()->can('Delete Category'))
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Category') || auth()->user()->hasPermissionTo('Delete Category'))
                                         <th>Action</th>
                                         @endif
                                     </tr>
@@ -91,14 +91,14 @@
                                         <td>{{ $row->category_name }}</td>
                                         <td>{{ $row->business_unit->business_unit_name }}</td>
                                         <td>{{ $row->category_description ?? "-"}}</td>
-                                        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Category') || auth()->user()->can('Delete Category'))
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Category') || auth()->user()->hasPermissionTo('Delete Category'))
                                         <td class="text-right">
-                                            @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Category'))
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Category'))
                                             <button class="btn btn-light mb-2" data-toggle="modal" data-target="#editCategoryModal" data-id="{{ $row->id }}">
                                                 <i class="ti-pencil-alt text-primary"></i>Edit
                                             </button>
                                             @endif
-                                            @if (auth()->user()->roles('Master') || auth()->user()->can('Delete Category'))
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Category'))
                                             <button class="btn btn-light" data-toggle="modal" data-target="#deleteCategoryModal" data-id="{{ $row->id }}">
                                                 <i class="ti-close text-danger"></i>Remove
                                             </button>
@@ -123,13 +123,13 @@
 
         <!-- -------------------------------------------------------------------------------------------------------------------------- -->
 
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Create Category'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Category'))
         @include('categories.modal.add')
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Category'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Category'))
         @include('categories.modal.edit')
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Delete Category'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Category'))
         @include('categories.modal.delete')
         @endif
 

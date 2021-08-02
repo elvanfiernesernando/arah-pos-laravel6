@@ -16,7 +16,8 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:50'
+            'name' => 'required|string|max:50',
+            'scope' => 'required|string|max:50'
         ]);
 
         $check_role = Role::where('name', $request->name)->where('company_id', userCompanyId())->get()->first();
@@ -24,7 +25,8 @@ class RoleController extends Controller
         if (empty($check_role)) {
             $role = Role::firstOrCreate([
                 'name' => $request->name,
-                'company_id' => userCompanyId()
+                'company_id' => userCompanyId(),
+                'scope' => $request->scope
             ]);
             return redirect()->back()->with(['success' => '<strong>' . $role->name . '</strong> Role Created']);
         } else {

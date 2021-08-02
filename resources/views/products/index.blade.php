@@ -54,10 +54,10 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <h3 class="card-title">All Product</h3>
-                                <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                <p class="card-description">Tips: use 450px x 450px image resolution for best view in mobile app.</p>
                             </div>
 
-                            @if (auth()->user()->roles('Master') || auth()->user()->can('Create Product'))
+                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Product'))
                             <div class="col-md-4">
                                 <div class="grid-margin float-lg-right mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-icon-text" data-toggle="modal" data-target="#addProductModal">
@@ -82,7 +82,7 @@
                                         <th>Business Unit</th>
                                         <th>Category</th>
                                         <th>Last update</th>
-                                        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Product') || auth()->user()->can('Delete Product'))
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Product') || auth()->user()->hasPermissionTo('Delete Product'))
                                         <th>Action</th>
                                         @endif
                                     </tr>
@@ -111,14 +111,14 @@
                                         <td>{{ $row->category->business_unit->business_unit_name }}</td>
                                         <td>{{ $row->category->category_name }}</td>
                                         <td>{{ $row->updated_at }}</td>
-                                        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Product') || auth()->user()->can('Delete Product'))
+                                        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Product') || auth()->user()->hasPermissionTo('Delete Product'))
                                         <td class="text-right">
-                                            @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Product'))
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Product'))
                                             <button class="btn btn-light mb-2" data-toggle="modal" data-target="#editProductModal" data-id="{{ $row->id }}">
                                                 <i class="ti-pencil-alt text-primary"></i>Edit
                                             </button>
                                             @endif
-                                            @if (auth()->user()->roles('Master') || auth()->user()->can('Delete Product'))
+                                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Product'))
                                             <button class="btn btn-light" data-toggle="modal" data-target="#deleteProductModal" data-id="{{ $row->id }}">
                                                 <i class="ti-close text-danger"></i>Remove
                                             </button>
@@ -144,13 +144,13 @@
 
         <!-- ------------------------------------------------------ MAIN CONTENT END -------------------------------------------------------------------- -->
 
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Create Product'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Product'))
         @include('products.modal.add')
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Edit Product'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Product'))
         @include('products.modal.edit')
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Delete Product'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Product'))
         @include('products.modal.delete')
         @endif
 

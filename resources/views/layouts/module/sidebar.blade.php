@@ -1,5 +1,5 @@
 <!-- SIDEBAR START -->
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
+<nav class="sidebar sidebar-offhasPermissionTovas" id="sidebar">
     <ul class="nav">
         @if(auth()->user()->is_profile_completed == 1)
         <li class="nav-item">
@@ -8,7 +8,7 @@
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Access Category Page') || auth()->user()->can('Access Product Page'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Category Page') || auth()->user()->hasPermissionTo('Access Product Page'))
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#inventory" aria-expanded="false" aria-controls="ui-basic">
                 <i class="icon-box menu-icon"></i>
@@ -17,17 +17,17 @@
             </a>
             <div class="collapse" id="inventory">
                 <ul class="nav flex-column sub-menu">
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Category Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Category Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('category.index') }}">Category</a></li>
                     @endif
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Product Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Product Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('product.index') }}">Product</a></li>
                     @endif
                 </ul>
             </div>
         </li>
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Access Business Unit Page') || auth()->user()->can('Access Outlet Page'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Business Unit Page') || auth()->user()->hasPermissionTo('Access Outlet Page'))
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#business" aria-expanded="false" aria-controls="ui-basic">
                 <i class="icon-briefcase menu-icon"></i>
@@ -36,17 +36,17 @@
             </a>
             <div class="collapse" id="business">
                 <ul class="nav flex-column sub-menu">
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Business Unit Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Business Unit Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('business-unit.index') }}">Business Unit</a></li>
                     @endif
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Outlet Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Outlet Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('outlet.index') }}">Outlet</a></li>
                     @endif
                 </ul>
             </div>
         </li>
         @endif
-        @if (auth()->user()->roles('Master') || auth()->user()->can('Access Employee Page') || auth()->user()->can('Access Role Page') || auth()->user()->can('Access Permission Page'))
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Employee Page') || auth()->user()->hasPermissionTo('Access Role Page') || auth()->user()->hasPermissionTo('Access Permission Page'))
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#employee" aria-expanded="false" aria-controls="ui-basic">
                 <i class="icon-head menu-icon"></i>
@@ -55,13 +55,13 @@
             </a>
             <div class="collapse" id="employee">
                 <ul class="nav flex-column sub-menu">
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Employee Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Employee Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('user.index') }}">Employee</a></li>
                     @endif
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Role Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Role Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('role.index') }}">Role</a></li>
                     @endif
-                    @if (auth()->user()->roles('Master') || auth()->user()->can('Access Permission Page'))
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Permission Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('permission.roles_permission') }}">Permission</a></li>
                     @endif
                 </ul>

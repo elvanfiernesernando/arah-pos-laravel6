@@ -96,7 +96,54 @@ class PermissionsTableSeeder extends Seeder
             'guard_name' => 'web'
         ]);
 
-        $role = Role::where('name', 'Admin')->get()->first();
-        $role->givePermissionTo(Permission::all());
+        Permission::create([
+            'name' => 'Access Employee Page',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Create Employee',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Edit Employee',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Delete Employee',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Access Role Page',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Create Role',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Delete Role',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Access Permission Page',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Edit Permission',
+            'guard_name' => 'web'
+        ]);
+
+        Permission::create([
+            'name' => 'Access Mobile Apps',
+            'guard_name' => 'web'
+        ]);
     }
 }

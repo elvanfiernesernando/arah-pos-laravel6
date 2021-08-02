@@ -9,19 +9,24 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\User;
 use App\Product;
+use App\Role;
 
 class UserController extends Controller
 {
     public $successStatus = 200;
 
-    public function login(){
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+    public function login()
+    {
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('nApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
-        }
-        else{
-            return response()->json(['error'=>'Unauthorised'], 401);
+            if ($user->hasRole('Master') || $user->can('Access Mobile Apps')) {
+                $success['token'] =  $user->createToken('ArahPOS')->accessToken;
+                return response()->json(['success' => $success], $this->successStatus);
+            } else {
+                return response()->json(['error' => 'You do not have any of the necessary access rights'], 401);
+            }
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
 
@@ -35,22 +40,22 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);            
+            return response()->json(['error' => $validator->errors()], 401);
         }
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('nApp')->accessToken;
+        $success['token'] =  $user->createToken('ArahPOS')->accessToken;
         $success['name'] =  $user->name;
 
-        return response()->json(['success'=>$success], $this->successStatus);
+        return response()->json(['success' => $success], $this->successStatus);
     }
 
     public function logout(Request $request)
     {
         $logout = $request->user()->token()->revoke();
-        if($logout){
+        if ($logout) {
             return response()->json([
                 'message' => 'Successfully logged out'
             ]);
@@ -69,7 +74,8 @@ class UserController extends Controller
         $products = Product::inBusinessUnit($user_business_unit_id)->orderBy('created_at', 'DESC')->get();
 
         return response()->json(
-            $products
-        , 200);
+            $products,
+            200
+        );
     }
 }

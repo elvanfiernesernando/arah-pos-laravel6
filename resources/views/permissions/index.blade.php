@@ -56,7 +56,7 @@
         <div class="row">
 
             <!-- Create New Permission START -->
-            <div class="col-md-4 grid-margin stretch-card">
+            {{-- <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Add New Permission</h4>
@@ -74,10 +74,10 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- New permission END -->
 
-            <div class="col-md-8 grid-margin stretch-card">
+            <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Set Permission to this Role</h4>
@@ -89,7 +89,7 @@
                                 <div class="input-group">
                                     <select name="role" class="form-control">
                                         @foreach ($roles as $value)
-                                        <option value="{{ $value }}" {{ request()->get('role') == $value ? 'selected':'' }}>{{ $value }}</option>
+                                        <option value="{{ $value->name }}" {{ request()->get('role') == $value->name ? 'selected':'' }}>{{ $value->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-append">
@@ -99,36 +99,83 @@
                             </div>
                         </form>
 
+                        
                         {{-- jika $permission tidak bernilai kosong --}}
                         @if (!empty($permissions))
                         <form action="{{ route('permission.setRolePermission', request()->get('role')) }}" method="post">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
-                            <div class="form-group">
-                                <div class="nav-tabs-custom">
-                                    <ul class="nav nav-tabs">
-                                        <label for="">Permissions</label>
-                                    </ul>
-                                    @php $no = 1; @endphp
-                                    @foreach ($permissions as $key => $row)
-                                    <div class="form-check form-check-success">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" name="permission[]" class="form-check-input" value="{{ $row }}" {{--  CHECK, JIKA PERMISSION TERSEBUT SUDAH DI SET, MAKA CHECKED --}} {{ in_array($row, $hasPermission) ? 'checked':'' }}>
-                                            {{ $row }}
-                                        </label>
-                                        @if ($no++%4 == 0)
-                                        <br>
-                                        @endif
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="nav-tabs-custom">
+                                            <ul class="nav nav-tabs">
+                                                <label for="">Permissions</label>
+                                            </ul>
+                                            @php $no = 1; @endphp
+                                            @foreach ($permissions as $key => $row)
+                                            <div class="form-check form-check-success">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" name="permission[]" class="form-check-input" value="{{ $row }}" {{--  CHECK, JIKA PERMISSION TERSEBUT SUDAH DI SET, MAKA CHECKED --}} {{ in_array($row, $hasPermission) ? 'checked':'' }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                    {{ $row }}
+                                                </label>
+                                                @if ($no++%4 == 0 && $no<=23)
+                                                <br>
+                                                @endif
+                                                @if ($no>=24 && $no<=26 && $no++%3 == 0)
+                                                <br>
+                                                @endif
+                                                @if ($no>=28)
+                                                <br>
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                    @endforeach
+
                                 </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <div class="nav-tabs-custom">
+                                            <ul class="nav nav-tabs">
+                                                <label for="">Scope</label>
+                                            </ul>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="scope" value="Company" {{ ($getRole->scope == "Company") ? "checked" : "" }}  {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                Company
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="scope" value="Business Unit" {{ ($getRole->scope == "Business Unit") ? "checked" : "" }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                Business Unit
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="scope" value="Branch" {{ ($getRole->scope == "Branch") ? "checked" : "" }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                Outlet
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="float-right">
+                                        <button class="btn {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? 'btn-primary' : 'btn-secondary' }} btn-md" {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                            <i class="fa fa-send"></i>Save
+                                        </button>
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            <div class="float-right">
-                                <button class="btn btn-primary btn-md">
-                                    <i class="fa fa-send"></i>Save Permission
-                                </button>
-                            </div>
                         </form>
                         @endif
 
