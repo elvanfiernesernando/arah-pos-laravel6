@@ -23,7 +23,7 @@ class UserController extends Controller
 
         $users = $user->whereHas("roles", function ($q) {
             $q->where("name", '!=', "Master");
-        })->orderBy('created_at', 'ASC')->get();
+        })->orderBy('created_at', 'ASC')->with('branch.business_unit')->get();
 
         return view('users.index', compact('users'));
     }

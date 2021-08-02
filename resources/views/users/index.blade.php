@@ -76,6 +76,8 @@
                                         <th>No.</th>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Business Unit</th>
+                                        <th>Branch</th>
                                         <th>Role</th>
                                         <th>Status</th>
                                         @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Employee') || auth()->user()->hasPermissionTo('Delete Employee'))
@@ -90,6 +92,8 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->name }}</td>
                                         <td>{{ $row->email }}</td>
+                                        <td>{{ $row->branch->first()->business_unit->business_unit_name }}</td>
+                                        <td>{{ $row->branch->first()->branch_name }}</td>
                                         <td>
                                             @foreach ($row->getRoleNames() as $role)
                                             <label for="" class=" badge badge-info">{{ $role }}</label>
