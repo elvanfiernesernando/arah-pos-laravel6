@@ -140,28 +140,29 @@
                                 <div class="col-md-6">
 
                                     <div class="form-group">
-                                        <div class="nav-tabs-custom">
+                                        <div class="nav-tabs-custom" id="scope_section">
                                             <ul class="nav nav-tabs">
-                                                <label for="">Scope</label>
+                                                <label for="">Permission Scope</label>
                                             </ul>
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="scope" value="Company" {{ ($getRole->scope == "Company") ? "checked" : "" }}  {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                <input id="rb_company" type="radio" class="form-check-input" name="scope" value="Company" {{ ($getRole->scope == "Company") ? "checked" : "" }}  {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
                                                 Company
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="scope" value="Business Unit" {{ ($getRole->scope == "Business Unit") ? "checked" : "" }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                <input id="rb_business_unit" type="radio" class="form-check-input" name="scope" value="Business Unit" {{ ($getRole->scope == "Business Unit") ? "checked" : "" }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
                                                 Business Unit
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="scope" value="Branch" {{ ($getRole->scope == "Branch") ? "checked" : "" }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
+                                                <input id="rb_outlet" type="radio" class="form-check-input" name="scope" value="Branch" {{ ($getRole->scope == "Branch") ? "checked" : "" }} {{ (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Edit Permission')) && request()->get('role') != 'Cashier' ? '' : 'disabled' }}>
                                                 Outlet
                                                 </label>
                                             </div>
+                        
                                             
                                         </div>
                                     </div>
@@ -193,4 +194,20 @@
 
 </div>
 <!-- content-wrapper END -->
+@endsection
+
+@section('js')
+<script>
+    jQuery(document).ready(function($) {
+
+        if($('#rb_business_unit').is(':checked')) { 
+                $('#scope_section').append('<div class="alert alert-warning scope_info mt-3" role="alert">Business unit scope refer to assigned user\'s business unit.</div><a href="{{ route('user.index') }}"><u><p class="scope_info">Set user\'s business unit and outlet</p></u></a>');
+        }
+
+        if($('#rb_outlet').is(':checked')) { 
+                $('#scope_section').append('<div class="alert alert-warning scope_info  mt-3" role="alert">Outlet scope refer to assigned user\'s outlet.</div><a href="{{ route('user.index') }}"><u><p class="scope_info">Set user\'s business unit and outlet</p></u></a>');
+        }
+
+    });
+</script>
 @endsection

@@ -27,6 +27,13 @@
                         <p class="text-danger">{{ $errors->first('password') }}</p>
                     </div>
                     <div class="form-group">
+                        <label for="">Role</label>
+                        <select name="role_id" class="role form-control {{ $errors->has('role_id') ? 'is-invalid':'' }}" required>
+                            <option value="">Choose</option>
+                        </select>
+                        <p class="text-danger">{{ $errors->first('role') }}</p>
+                    </div>
+                    <div class="form-group">
                         <label for="business_unit_id">Business Unit</label>
                         <select name="business_unit_id" class="business_unit form-control {{ $errors->has('business_unit_id') ? 'is-invalid':'' }}" required>
                             <option value="">Choose</option>
@@ -40,13 +47,6 @@
                             <option value="">Choose</option>
                         </select>
                         <p class="text-danger">{{ $errors->first('') }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Role</label>
-                        <select name="role_id" class="role form-control {{ $errors->has('role_id') ? 'is-invalid':'' }}" required>
-                            <option value="">Choose</option>
-                        </select>
-                        <p class="text-danger">{{ $errors->first('role') }}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

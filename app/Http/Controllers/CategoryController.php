@@ -13,18 +13,37 @@ class CategoryController extends Controller
     public function index()
     {
         // Mendapatkan data Category berdasarkan User Company ID dari helper
-        $category_by_company = Category::whereHas('business_unit', function ($q) {
+        $category = Category::whereHas('business_unit', function ($q) {
             return $q->where('company_id', userCompanyId());
         });
 
-        $categories = $category_by_company->with('business_unit')->get();
+        if (getUserRoleScope() == "Business Unit") {
+            $category->where('business_unit_id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $category->where('business_unit_id', userBusinessUnitId());
+        }
+
+        $categories = $category->with('business_unit')->get();
         return view('categories.index', compact('categories'));
     }
 
     public function create()
     {
         // Mendapatkan data Business Unit berdasarkan User Company ID
-        $business_units = Business_unit::where('company_id', userCompanyId())->orderBy('business_unit_name', 'ASC')->get();
+        $business_unit = Business_unit::where('company_id', userCompanyId());
+
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
+
         return response()->json([
             'data' => $business_units,
         ]);
@@ -57,10 +76,17 @@ class CategoryController extends Controller
         // Mendapatkan data kategory berdasarkan ID kategori
         $categories = Category::findOrFail($id);
 
-        // Mendapatkan User Company ID
-        $user_company_id = userCompanyId();
+        $business_unit = Business_unit::where('company_id', userCompanyId());
 
-        $business_units = Business_unit::where('company_id', $user_company_id)->orderBy('business_unit_name', 'ASC')->get();
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
 
         return response()->json([
             'categories' => $categories,

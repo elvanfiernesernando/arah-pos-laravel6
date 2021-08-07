@@ -64,7 +64,7 @@ function userIsProfileCompleted()
     return $user_is_profile_completed;
 }
 
-function getUserRole()
+function getUserRoleScope()
 {
     $role_scope = auth()->user()->roles->first()->scope;
     return $role_scope;
