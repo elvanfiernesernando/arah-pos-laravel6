@@ -10,11 +10,18 @@ class BusinessUnitController extends Controller
 
     public function index()
     {
-        // Mendapatkan User Company ID
-        $user_company_id = userCompanyId();
+        // Mendapatkan data business
+        $business_unit = Business_unit::where('company_id', userCompanyId());
 
-        // Mendapatkan data business berdasarkan company id
-        $business_units = Business_unit::where('company_id', $user_company_id)->get();
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
 
         return view('business_units.index', compact('business_units'));
     }
