@@ -14,25 +14,48 @@ class ProductController extends Controller
     public function index()
     {
 
-        // Mendapatkan data Product berdasarkan User Company ID
-        $product_by_company = Product::whereHas('category', function ($q) {
-            return $q->whereHas('business_unit', function ($q) {
-
-                // Mendapatkan User Company ID
-                $user_company_id = userCompanyId();
-
-                return $q->where('company_id', $user_company_id);
+        if (getUserRoleScope() == "Company") {
+            $product = Product::whereHas('category', function ($q) {
+                return $q->whereHas('business_unit', function ($q) {
+                    return $q->where('company_id', userCompanyId());
+                });
             });
-        });
+        }
 
-        $products = $product_by_company->with('category')->get();
+        if (getUserRoleScope() == "Business Unit") {
+            $product = Product::whereHas('category', function ($q) {
+                return $q->whereHas('business_unit', function ($q) {
+                    return $q->where('id', userBusinessUnitId());
+                });
+            });
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $product = Product::whereHas('category', function ($q) {
+                return $q->whereHas('business_unit', function ($q) {
+                    return $q->where('id', userBusinessUnitId());
+                });
+            });
+        }
+
+        $products = $product->with('category')->get();
 
         return view('products.index', compact('products'));
     }
 
     public function create()
     {
-        $business_units = Business_unit::where('company_id', userCompanyId())->orderBy('business_unit_name', 'ASC')->get();
+        $business_unit = Business_unit::where('company_id', userCompanyId());
+
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
 
         return response()->json([
             'data' => $business_units
@@ -96,8 +119,19 @@ class ProductController extends Controller
         //query select berdasarkan id
         $products = Product::findOrFail($id);
 
-        // Get business units data by company ID
-        $business_units = Business_unit::where('company_id', userCompanyId())->orderBy('business_unit_name', 'ASC')->get();
+        // Get business units data
+        $business_unit = Business_unit::where('company_id', userCompanyId());
+
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
+
         // Variable dibawah digunakan sebagai pembanding untuk memunculkan class 'selected'
         $current_business_unit = Business_unit::whereHas('categories', function ($q) use ($id) {
             return $q->whereHas('products', function ($q) use ($id) {
