@@ -11,29 +11,44 @@ class BranchController extends Controller
 
     public function index()
     {
-        // Mendapatkan User Company ID
-        $user_company_id = userCompanyId();
+        if (getUserRoleScope() == "Company") {
+            $branch = Branch::whereHas('business_unit', function ($q) {
+                return $q->where('company_id', userCompanyId());
+            });
+        }
 
-        // Mendapatkan data branch berdasarkan adalah company_id yang berada di tabel business_unit
-        $branches = Branch::whereHas('business_unit', function ($q) {
+        if (getUserRoleScope() == "Business Unit") {
+            $branch = Branch::whereHas('business_unit', function ($q) {
+                return $q->where('id', userBusinessUnitId());
+            });
+        }
 
-            // Mendapatkan User Company ID
-            $user_company_id = userCompanyId();
+        if (getUserRoleScope() == "Branch") {
+            $branch = Branch::whereHas('business_unit', function ($q) {
+                return $q->where('id', userBusinessUnitId());
+            });
+        }
 
-            return $q->where('company_id', $user_company_id);
-        })->get();
+        $branches = $branch->orderBy('branch_name', 'ASC')->get();
 
         return view('branches.index', compact('branches'));
     }
 
     public function create()
     {
+        // Mendapatkan data Business Unit
+        $business_unit = Business_unit::where('company_id', userCompanyId());
 
-        // Mendapatkan User Company ID
-        $user_company_id = userCompanyId();
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
 
-        // Mendapatkan data Business Unit berdasarkan User Company ID
-        $business_units = Business_unit::where('company_id', $user_company_id)->orderBy('business_unit_name', 'ASC')->get();
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
+
         return response()->json([
             'data' => $business_units,
         ]);
@@ -67,10 +82,18 @@ class BranchController extends Controller
         //query select berdasarkan id
         $branches = Branch::findOrFail($id);
 
-        $user_company_id = userCompanyId();
+        // Mendapatkan data Business Unit
+        $business_unit = Business_unit::where('company_id', userCompanyId());
 
-        // Mendapatkan data Business Unit berdasarkan User Company ID
-        $business_units = Business_unit::where('company_id', $user_company_id)->orderBy('business_unit_name', 'ASC')->get();
+        if (getUserRoleScope() == "Business Unit") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        if (getUserRoleScope() == "Branch") {
+            $business_unit->where('id', userBusinessUnitId());
+        }
+
+        $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
 
         return response()->json([
             'business_units' => $business_units,

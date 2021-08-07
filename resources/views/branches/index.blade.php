@@ -58,7 +58,7 @@
                                 <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                             </div>
 
-                            @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Outlet'))
+                            @if ((auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Create Outlet')) && getUserRoleScope() != "Branch")
                             <div class="col-md-4">
                                 <div class="grid-margin float-lg-right mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-icon-text" data-toggle="modal" data-target="#addBranchModal">
