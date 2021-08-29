@@ -14,15 +14,15 @@ class CategoryController extends Controller
     {
         // Mendapatkan data Category berdasarkan User Company ID dari helper
         $category = Category::whereHas('business_unit', function ($q) {
-            return $q->where('company_id', userCompanyId());
+            return $q->where('company_id', userCompanyId(auth()->user()->id));
         });
 
         if (getUserRoleScope() == "Business Unit") {
-            $category->where('business_unit_id', userBusinessUnitId());
+            $category->where('business_unit_id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $category->where('business_unit_id', userBusinessUnitId());
+            $category->where('business_unit_id', userBusinessUnitId(auth()->user()->id));
         }
 
         $categories = $category->with('business_unit')->get();
@@ -32,14 +32,14 @@ class CategoryController extends Controller
     public function create()
     {
         // Mendapatkan data Business Unit berdasarkan User Company ID
-        $business_unit = Business_unit::where('company_id', userCompanyId());
+        $business_unit = Business_unit::where('company_id', userCompanyId(auth()->user()->id));
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
@@ -76,14 +76,14 @@ class CategoryController extends Controller
         // Mendapatkan data kategory berdasarkan ID kategori
         $categories = Category::findOrFail($id);
 
-        $business_unit = Business_unit::where('company_id', userCompanyId());
+        $business_unit = Business_unit::where('company_id', userCompanyId(auth()->user()->id));
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();

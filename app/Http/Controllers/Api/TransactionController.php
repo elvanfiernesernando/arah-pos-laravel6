@@ -8,13 +8,18 @@ use App\Product;
 
 class TransactionController extends Controller
 {
-    public function getProducts()
+    public function getProducts(Request $request)
     {
-        $user_business_unit_id = userBusinessUnitId();
+        //validasi data
+        $this->validate($request, [
+            'id' => 'required|integer'
+        ]);
+
+        $user_business_unit_id = userBusinessUnitId($request->id);
         $products = Product::inBusinessUnit($user_business_unit_id)->orderBy('created_at', 'DESC')->with('category')->get();
 
         return response()->json([
             'products' => $products
-        ]);
+        ], 201);
     }
 }

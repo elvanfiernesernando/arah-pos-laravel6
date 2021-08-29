@@ -13,7 +13,7 @@ class CompanyController extends Controller
     public function index()
     {
         // Mendapatkan User Company ID
-        $user_company_id = userCompanyId();
+        $user_company_id = userCompanyId(auth()->user()->id);
 
         // Mendapatkan data company berdasarkan company id
         $companies = Company::findOrFail($user_company_id);
@@ -25,7 +25,7 @@ class CompanyController extends Controller
         $branches = Branch::whereHas('business_unit', function ($q) {
 
             // Mendapatkan User Company ID
-            $user_company_id = userCompanyId();
+            $user_company_id = userCompanyId(auth()->user()->id);
 
             return $q->where('company_id', $user_company_id);
         })->get();

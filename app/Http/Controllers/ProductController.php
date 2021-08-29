@@ -17,7 +17,7 @@ class ProductController extends Controller
         if (getUserRoleScope() == "Company") {
             $product = Product::whereHas('category', function ($q) {
                 return $q->whereHas('business_unit', function ($q) {
-                    return $q->where('company_id', userCompanyId());
+                    return $q->where('company_id', userCompanyId(auth()->user()->id));
                 });
             });
         }
@@ -25,7 +25,7 @@ class ProductController extends Controller
         if (getUserRoleScope() == "Business Unit") {
             $product = Product::whereHas('category', function ($q) {
                 return $q->whereHas('business_unit', function ($q) {
-                    return $q->where('id', userBusinessUnitId());
+                    return $q->where('id', userBusinessUnitId(auth()->user()->id));
                 });
             });
         }
@@ -33,7 +33,7 @@ class ProductController extends Controller
         if (getUserRoleScope() == "Branch") {
             $product = Product::whereHas('category', function ($q) {
                 return $q->whereHas('business_unit', function ($q) {
-                    return $q->where('id', userBusinessUnitId());
+                    return $q->where('id', userBusinessUnitId(auth()->user()->id));
                 });
             });
         }
@@ -45,14 +45,14 @@ class ProductController extends Controller
 
     public function create()
     {
-        $business_unit = Business_unit::where('company_id', userCompanyId());
+        $business_unit = Business_unit::where('company_id', userCompanyId(auth()->user()->id));
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
@@ -120,14 +120,14 @@ class ProductController extends Controller
         $products = Product::findOrFail($id);
 
         // Get business units data
-        $business_unit = Business_unit::where('company_id', userCompanyId());
+        $business_unit = Business_unit::where('company_id', userCompanyId(auth()->user()->id));
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();

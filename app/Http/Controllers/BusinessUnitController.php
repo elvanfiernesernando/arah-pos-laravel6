@@ -11,14 +11,14 @@ class BusinessUnitController extends Controller
     public function index()
     {
         // Mendapatkan data business
-        $business_unit = Business_unit::where('company_id', userCompanyId());
+        $business_unit = Business_unit::where('company_id', userCompanyId(auth()->user()->id));
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
@@ -37,7 +37,7 @@ class BusinessUnitController extends Controller
         try {
 
             // Mendapatkan User Company ID
-            $user_company_id = userCompanyId();
+            $user_company_id = userCompanyId(auth()->user()->id);
 
             $business_units = Business_unit::firstOrCreate([
                 'business_unit_name' => $request->business_unit_name,

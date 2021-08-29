@@ -7,13 +7,13 @@ use App\Branch;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
-function userCompanyId()
+function userCompanyId($id)
 {
 
-    $user_company = Company::whereHas('business_units', function ($q) {
-        return $q->whereHas('branches', function ($q) {
-            return $q->whereHas('users', function ($q) {
-                return $q->where('user_id', auth()->user()->id);
+    $user_company = Company::whereHas('business_units', function ($q) use ($id) {
+        return $q->whereHas('branches', function ($q) use ($id) {
+            return $q->whereHas('users', function ($q) use ($id) {
+                return $q->where('user_id', $id);
             });
         });
     });
@@ -22,12 +22,12 @@ function userCompanyId()
     return $user_company_id;
 }
 
-function userCompanyStatus()
+function userCompanyStatus($id)
 {
-    $user_company = Company::whereHas('business_units', function ($q) {
-        return $q->whereHas('branches', function ($q) {
-            return $q->whereHas('users', function ($q) {
-                return $q->where('user_id', auth()->user()->id);
+    $user_company = Company::whereHas('business_units', function ($q) use ($id) {
+        return $q->whereHas('branches', function ($q) use ($id) {
+            return $q->whereHas('users', function ($q) use ($id) {
+                return $q->where('user_id', $id);
             });
         });
     });
@@ -36,11 +36,11 @@ function userCompanyStatus()
     return $user_company_status;
 }
 
-function userBusinessUnitId()
+function userBusinessUnitId($id)
 {
-    $user_business_unit = Business_unit::whereHas('branches', function ($q) {
-        return $q->whereHas('users', function ($q) {
-            return $q->where('user_id', auth()->user()->id);
+    $user_business_unit = Business_unit::whereHas('branches', function ($q) use ($id) {
+        return $q->whereHas('users', function ($q) use ($id) {
+            return $q->where('user_id', $id);
         });
     });
 
@@ -48,19 +48,19 @@ function userBusinessUnitId()
     return $user_business_unit_id;
 }
 
-function userBranchId()
+function userBranchId($id)
 {
-    $user_branch = Branch::whereHas('users', function ($q) {
-        return $q->where('user_id', auth()->user()->id);
+    $user_branch = Branch::whereHas('users', function ($q) use ($id) {
+        return $q->where('user_id', $id);
     });
 
     $user_branch_id = $user_branch->get()->pluck('id')->first();
     return $user_branch_id;
 }
 
-function userIsProfileCompleted()
+function userIsProfileCompleted($id)
 {
-    $user_is_profile_completed = User::where('id', auth()->user()->id)->pluck('is_profile_completed')->first();
+    $user_is_profile_completed = User::where('id', $id)->pluck('is_profile_completed')->first();
     return $user_is_profile_completed;
 }
 

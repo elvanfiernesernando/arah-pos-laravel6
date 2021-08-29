@@ -13,19 +13,19 @@ class BranchController extends Controller
     {
         if (getUserRoleScope() == "Company") {
             $branch = Branch::whereHas('business_unit', function ($q) {
-                return $q->where('company_id', userCompanyId());
+                return $q->where('company_id', userCompanyId(auth()->user()->id));
             });
         }
 
         if (getUserRoleScope() == "Business Unit") {
             $branch = Branch::whereHas('business_unit', function ($q) {
-                return $q->where('id', userBusinessUnitId());
+                return $q->where('id', userBusinessUnitId(auth()->user()->id));
             });
         }
 
         if (getUserRoleScope() == "Branch") {
             $branch = Branch::whereHas('business_unit', function ($q) {
-                return $q->where('id', userBusinessUnitId());
+                return $q->where('id', userBusinessUnitId(auth()->user()->id));
             });
         }
 
@@ -40,11 +40,11 @@ class BranchController extends Controller
         $business_unit = Business_unit::where('company_id', userCompanyId());
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
@@ -86,11 +86,11 @@ class BranchController extends Controller
         $business_unit = Business_unit::where('company_id', userCompanyId());
 
         if (getUserRoleScope() == "Business Unit") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         if (getUserRoleScope() == "Branch") {
-            $business_unit->where('id', userBusinessUnitId());
+            $business_unit->where('id', userBusinessUnitId(auth()->user()->id));
         }
 
         $business_units = $business_unit->orderBy('business_unit_name', 'ASC')->get();
