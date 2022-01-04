@@ -19,7 +19,7 @@ class PermissionController extends Controller
         $getRole = null;
 
         //Mengambil data role
-        $roles = Role::where('company_id', userCompanyId())->get();
+        $roles = Role::where('company_id', userCompanyId(auth()->user()->id)->get());
 
         //apabila parameter role terpenuhi
         if (!empty($role)) {

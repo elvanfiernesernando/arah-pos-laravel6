@@ -105,23 +105,28 @@
                                     <tr>
                                         <td>{{ $index + $roles->firstItem() }}</td>
                                         <td>{{ $row->name }}</td>
+                                        @if (strpos($row->scope, 'Branch') !== FALSE)
+                                        <td> Outlet </td>
+                                        @else
                                         <td>{{ $row->scope }}</td>
+
+                                        @endif
                                         <td>{{ $row->created_at }}</td>
                                         <td>
                                             @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Delete Role'))
                                             @if ($row->name != 'Cashier')
                                             <button class=" btn btn-light" data-toggle="modal" data-target="#deleteRoleModal" data-id="{{ $row->id }}">
-                                            <i class="ti-close text-danger"></i>Remove
-                                            </button>
-                                            @endif
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan=" 4" class="text-center">No data</td>
-                                    </tr>
-                                    @endforelse
+                                <i class="ti-close text-danger"></i>Remove
+                                </button>
+                                @endif
+                                @endif
+                                </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan=" 4" class="text-center">No data</td>
+                                </tr>
+                                @endforelse
                                 </tbody>
                             </table>
                             {{ $roles->links() }}

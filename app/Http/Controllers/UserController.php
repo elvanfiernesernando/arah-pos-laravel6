@@ -17,7 +17,7 @@ class UserController extends Controller
         // Mendapatkan data user berdasarkan Company ID yang berada pada relationship user->branch->business_unit->company
         $user = User::whereHas('branch', function ($q) {
             return $q->whereHas('business_unit', function ($q) {
-                return $q->where('company_id', userCompanyId());
+                return $q->where('company_id', userCompanyId(auth()->user()->id));
             });
         });
 
@@ -30,8 +30,8 @@ class UserController extends Controller
 
     public function create()
     {
-        $business_units = Business_unit::where('company_id', userCompanyId())->orderBy('business_unit_name', 'ASC')->get();
-        $roles = Role::where('company_id', userCompanyId())->orderBy('name', 'ASC')->get();
+        $business_units = Business_unit::where('company_id', userCompanyId(auth()->user()->id))->orderBy('business_unit_name', 'ASC')->get();
+        $roles = Role::where('company_id', userCompanyId(auth()->user()->id))->orderBy('name', 'ASC')->get();
 
         return response()->json([
             'data' => $roles,

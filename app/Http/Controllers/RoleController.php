@@ -9,7 +9,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::orderBy('created_at', 'DESC')->where('company_id', userCompanyId())->paginate(10);
+        $roles = Role::orderBy('created_at', 'DESC')->where('company_id', userCompanyId(auth()->user()->id))->paginate(10);
         return view('roles.index', compact('roles'));
     }
 
@@ -20,12 +20,12 @@ class RoleController extends Controller
             'scope' => 'required|string|max:50'
         ]);
 
-        $check_role = Role::where('name', $request->name)->where('company_id', userCompanyId())->get()->first();
+        $check_role = Role::where('name', $request->name)->where('company_id', userCompanyId(auth()->user()->id))->get()->first();
 
         if (empty($check_role)) {
             $role = Role::firstOrCreate([
                 'name' => $request->name,
-                'company_id' => userCompanyId(),
+                'company_id' => userCompanyId(auth()->user()->id),
                 'scope' => $request->scope
             ]);
             return redirect()->back()->with(['success' => '<strong>' . $role->name . '</strong> Role Created']);
