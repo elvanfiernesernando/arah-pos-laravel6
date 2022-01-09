@@ -19,12 +19,12 @@ class PermissionController extends Controller
         $getRole = null;
 
         //Mengambil data role
-        $roles = Role::where('company_id', userCompanyId(auth()->user()->id)->get());
+        $roles = Role::where('company_id', userCompanyId(auth()->user()->id))->get();
 
         //apabila parameter role terpenuhi
         if (!empty($role)) {
             //select role berdasarkan namenya, ini sejenis dengan method find()
-            $getRole = Role::findByName($role);
+            $getRole = Role::where('name', $role)->where('company_id', userCompanyId(auth()->user()->id))->first();
 
             //Query untuk mengambil permission yang telah dimiliki oleh role terkait
             $hasPermission = DB::table('role_has_permissions')
@@ -55,7 +55,7 @@ class PermissionController extends Controller
     public function setRolePermission(Request $request, $role)
     {
         //select role berdasarkan namanya
-        $role = Role::findByName($role);
+        $role = Role::where('name', $role)->where('company_id', userCompanyId(auth()->user()->id))->first();
 
         //fungsi syncPermission akan menghapus semua permissio yg dimiliki role tersebut
         //kemudian di-assign kembali sehingga tidak terjadi duplicate data
