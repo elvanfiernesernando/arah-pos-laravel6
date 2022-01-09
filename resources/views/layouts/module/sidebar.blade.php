@@ -8,25 +8,6 @@
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
-        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Category Page') || auth()->user()->hasPermissionTo('Access Product Page'))
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#inventory" aria-expanded="false" aria-controls="ui-basic">
-                <i class="icon-box menu-icon"></i>
-                <span class="menu-title">Inventory</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="inventory">
-                <ul class="nav flex-column sub-menu">
-                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Category Page'))
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('category.index') }}">Category</a></li>
-                    @endif
-                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Product Page'))
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('product.index') }}">Product</a></li>
-                    @endif
-                </ul>
-            </div>
-        </li>
-        @endif
         @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Business Unit Page') || auth()->user()->hasPermissionTo('Access Outlet Page'))
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#business" aria-expanded="false" aria-controls="ui-basic">
@@ -41,6 +22,25 @@
                     @endif
                     @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Outlet Page'))
                     <li class="nav-item"> <a class="nav-link" href="{{ route('outlet.index') }}">Outlet</a></li>
+                    @endif
+                </ul>
+            </div>
+        </li>
+        @endif
+        @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Category Page') || auth()->user()->hasPermissionTo('Access Product Page'))
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#inventory" aria-expanded="false" aria-controls="ui-basic">
+                <i class="icon-box menu-icon"></i>
+                <span class="menu-title">Inventory</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="inventory">
+                <ul class="nav flex-column sub-menu">
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Category Page'))
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('category.index') }}">Category</a></li>
+                    @endif
+                    @if (auth()->user()->hasRole('Master') || auth()->user()->hasPermissionTo('Access Product Page'))
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('product.index') }}">Product</a></li>
                     @endif
                 </ul>
             </div>
@@ -93,9 +93,9 @@
         </li> -->
         {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('transaction.index') }}">
-                <i class="icon-bag menu-icon"></i>
-                <span class="menu-title">Transaction</span>
-            </a>
+        <i class="icon-bag menu-icon"></i>
+        <span class="menu-title">Transaction</span>
+        </a>
         </li> --}}
         <!-- <li class="nav-item">
             <a class="nav-link" href="">
