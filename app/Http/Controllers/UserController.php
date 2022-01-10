@@ -92,7 +92,7 @@ class UserController extends Controller
         $users = User::findOrFail($id);
 
         // Get business units data by company ID
-        $business_units = Business_unit::where('company_id', userCompanyId())->orderBy('business_unit_name', 'ASC')->get();
+        $business_units = Business_unit::where('company_id', userCompanyId(auth()->user()->id))->orderBy('business_unit_name', 'ASC')->get();
         // Variable dibawah digunakan sebagai pembanding untuk memunculkan class 'selected'
         $user_business_unit = Business_unit::whereHas('branches', function ($q) use ($id) {
             return $q->whereHas('users', function ($q) use ($id) {
@@ -108,7 +108,7 @@ class UserController extends Controller
         })->get()->first();
 
         // Get all Roles data by Company ID
-        $roles = Role::where('company_id', userCompanyId())->orderBy('name', 'ASC')->get();
+        $roles = Role::where('company_id', userCompanyId(auth()->user()->id))->orderBy('name', 'ASC')->get();
         // Variable dibawah digunakan sebagai pembanding untuk memunculkan class 'selected'
         $user_role = $users->roles()->first();
 
