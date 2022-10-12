@@ -34,7 +34,7 @@
                         @endif
 
                         <h4 class="card-title">Hello, {{ auth()->user()->name}}</h4>
-                        <p class="mb-3">Let's finish setting up your account</p>
+                        <p class="mb-3">Just a few more steps, let's finish setting up your account</p>
                         <form id="vertical-registration-wizard" method="POST" action="{{ route('wizard.store') }}">
                             @csrf
                             <div>
@@ -47,13 +47,14 @@
                                     </div>
                                     <div class="form-group mb-0">
                                         <label for="company_email" class="required">Email</label>
-                                        <input id="company_email" name="company_email" type="email" class="form-control" placeholder="ex: example@mail.com">
+                                        <input id="company_email" name="company_email" type="email" class="form-control" placeholder="ex: example@mail.com" value="{{ auth()->user()->email }}">
                                     </div>
-                                    <label class="form-check-label text-muted ml-4 mt-2">
-                                        <input id="cb_company_email" type="checkbox" class="form-check-input">
-                                        Use current email
-                                        <i class="input-helper"></i>
-                                    </label>
+                                    <div class="form-check d-flex align-items-center mt-2">
+                                        <label class="form-check-label text-muted">
+                                            <input id="cb_company_email" type="checkbox" class="form-check-input" checked>
+                                            Use current email
+                                        </label>
+                                    </div>
                                     <div class="form-group">
                                         <label for="company_address" class="required">Address</label>
                                         <textarea id="company_address" name="company_address" type="text" class="form-control" rows="4"  placeholder="ex: Jl. Palmerah Barat 21 Gelora, Tanah Abang, Jakarta"></textarea>
@@ -93,11 +94,12 @@
                                 <h3>Finish</h3>
                                 <section>
                                     <h3 class="mb-3 mt-1">Finish</h3>
-                                    <label class="form-check-label text-muted ml-4 mt-2">
-                                        <input id="cb_agreement" name="cb_agreement" type="checkbox" class="form-check-input">
-                                        I hereby agree and confirm that all of my personal information and data filled in this form are accurate
-                                        <i class="input-helper"></i>
-                                    </label>
+                                    <div class="form-check d-flex align-items-center mt-2">
+                                        <label class="form-check-label text-muted">
+                                            <input id="cb_agreement" name="cb_agreement" type="checkbox" class="form-check-input">
+                                            I hereby agree and confirm that all of my personal information and data filled in this form are accurate
+                                        </label>
+                                    </div>
                                 </section>
                             </div>
                         </form>
@@ -171,11 +173,11 @@
                 },
                 branch_name: {
                     required: "This field is required",
-                    minlength: "Your branch name must consist of at least 5 characters"
+                    minlength: "Your outlet name must consist of at least 5 characters"
                 },
                 branch_address: {
                     required: "This field is required",
-                    minlength: "Your branch address must consist of at least 10 characters"
+                    minlength: "Your outlet address must consist of at least 10 characters"
                 },
                 cb_agreement: {
                     required: "&#10003"
@@ -211,7 +213,6 @@
                 return verticalForm.valid();
             },
             onFinished: function(event, currentIndex) {
-                // console.log(verticalForm.serialize());
 
                 verticalForm.submit();
                 // alert("Submitted!");

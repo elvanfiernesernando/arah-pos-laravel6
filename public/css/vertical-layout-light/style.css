@@ -12351,8 +12351,8 @@ fieldset:disabled .wizard>.actions a,
 .btn-primary:hover,
 .wizard>.actions a:hover {
     color: #fff;
-    background-color: #3f3e91;
-    border-color: #3b3a88;
+    background-color: #010675;
+    border-color: #010559;
 }
 
 .btn-primary:focus,
@@ -12360,8 +12360,8 @@ fieldset:disabled .wizard>.actions a,
 .btn-primary.focus,
 .wizard>.actions a.focus {
     color: #fff;
-    background-color: #3f3e91;
-    border-color: #3b3a88;
+    background-color: #010675;
+    border-color: #010559;
     box-shadow: 0 0 0 0.2rem rgba(102, 100, 184, 0.5);
 }
 
@@ -12381,7 +12381,7 @@ fieldset:disabled .wizard>.actions a,
 .show>.btn-primary.dropdown-toggle,
 .wizard>.actions .show>a.dropdown-toggle {
     color: #fff;
-    background-color: #3b3a88;
+    background-color: #010559;
     border-color: #37367f;
 }
 
@@ -16324,7 +16324,7 @@ a.badge:focus {
 a.badge-primary:hover,
 a.badge-primary:focus {
     color: #fff;
-    background-color: #3b3a88;
+    background-color: #010559;
 }
 
 a.badge-primary:focus,
@@ -17931,7 +17931,7 @@ button.bg-primary:hover,
 .settings-panel .color-tiles button.tiles.primary:hover,
 button.bg-primary:focus,
 .settings-panel .color-tiles button.tiles.primary:focus {
-    background-color: #3b3a88 !important;
+    background-color: #010559 !important;
 }
 
 .bg-secondary {
@@ -21949,7 +21949,7 @@ a.text-dark:focus {
     }
 
     abbr[title]::after {
-        content: " ("attr(title) ")";
+        content: " (" attr(title) ")";
     }
 
     pre {
@@ -26699,7 +26699,7 @@ select.border-dark.tt-hint:focus {
 @keyframes small {
     0% {
         transform: scale(1);
-        background-color: #8e8dce;
+        background-color: #acb0fa;
     }
 
     10% {
@@ -32300,17 +32300,17 @@ div.tagsinput span.tag a {
 }
 
 .wizard>.steps .done a {
-    background: #8e8dce;
+    background: #acb0fa;
     color: #ffffff;
 }
 
 .wizard>.steps .done a:hover {
-    background: #8e8dce;
+    background: #acb0fa;
     color: #ffffff;
 }
 
 .wizard>.steps .done a:active {
-    background: #8e8dce;
+    background: #acb0fa;
     color: #ffffff;
 }
 
