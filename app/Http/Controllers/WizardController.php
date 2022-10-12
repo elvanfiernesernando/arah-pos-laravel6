@@ -87,7 +87,7 @@ class WizardController extends Controller
             $cashier = Role::where('name', 'Cashier')->where('company_id', $company->id)->get();
 
             if ($cashier->isEmpty()) {
-                $cashier_role = Role::create([
+                $cashier_role = Role::firstOrCreate([
                     'name' => 'Cashier',
                     'company_id' => $company->id,
                     'scope' => 'Branch'
