@@ -15,7 +15,7 @@ class WizardController extends Controller
 {
     public function index()
     {
-        return view('auth.wizard');
+        return view('wizard.index');
     }
 
     public function store(Request $request)
