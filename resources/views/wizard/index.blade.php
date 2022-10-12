@@ -180,12 +180,16 @@
                     minlength: "Your outlet address must consist of at least 10 characters"
                 },
                 cb_agreement: {
-                    required: "&#10003"
+                    required: "You must read and agree to the terms and conditions in order to proceed."
                 }
             },
-            errorPlacement: function(label, element) {
-                label.addClass('ml-0 text-danger');
-                label.insertAfter(element);
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "cb_agreement") {
+                    error.insertAfter(".form-check");
+                } else {
+                    error.addClass('ml-0 mt-2 text-danger');
+                    error.insertAfter(element);
+                }
             },
             highlight: function(element, errorClass) {
                 $(element).parent().addClass('has-danger')
