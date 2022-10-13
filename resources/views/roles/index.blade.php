@@ -52,7 +52,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Create Role</h4>
-                        <p class="card-description">You have been created a cashier role by default after creating a master account. The cashier role cannot be changed or deleted.</p>
+                        <p class="card-description">After creating role, please go to permission page to add or edit role permission.</p>
 
                         <form action="{{ route('role.store') }}" method="POST">
                             @csrf
@@ -84,7 +84,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">All Role</h4>
-                        <p class="card-description">After creating role, please go to permission page to add or edit role permission.</p>
+                        <p class="card-description">Cashier role is available by default. It cannot be changed or deleted.</p>
 
                         <div class="table-responsive">
                             <table id="indexRoleTable" class="display expandable-table table-hover table-striped" width="100%"">

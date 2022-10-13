@@ -80,7 +80,7 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Set Permission to this Role</h4>
+                        <h4 class="card-title">Set Role Permission</h4>
                         <p class="card-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 
                         <form action="{{ route('permission.roles_permission') }}" method="GET">
